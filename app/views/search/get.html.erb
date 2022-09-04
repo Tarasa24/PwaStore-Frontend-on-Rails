@@ -1,0 +1,27 @@
+<main>
+  <% if @apps.empty? %>
+    <p>Nothing found</p>
+  <% else %>
+    <% @apps.each do |app| %>
+      <%= link_to app_detail_path(app.appID), class: "flex-none block mb-2 mr-2 flex snap-start truncate items-center" do %>
+        <span class="flex-none self-center text-center w-12 mr-2" title="score"><%= app.score %></span>
+        <img class="flex-none rounded-lg w-16 object-scale-down" src="<%= app.iconURL %>" alt="<%= app.name %> icon"
+          onerror="this.style='display: none';">
+        <div class="flex-auto ml-2 truncate">
+          <span class="text-l font-bold text-gray-900">
+            <%= app.name %>
+          </span>
+          <p class="text-xs text-gray-700 truncate" title="<%= app.description %>">
+            <%= app.description %>
+          </p>
+          <% if @appsMetrics.key?(app.appID) %>
+            <span class="flex items-center">
+              <b class="text-s"><% @appsMetrics[app.appID].average %></b>
+              <%= render "shared/star", rating: 1, maxRating: 1 %>
+            </span>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</main>

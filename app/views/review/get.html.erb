@@ -1,0 +1,5 @@
+<main>
+  <% @reviews.each do |review| %>
+    <%= render 'shared/review', review: review %>
+  <% end %>
+</main>

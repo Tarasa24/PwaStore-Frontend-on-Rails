@@ -1,0 +1,11 @@
+<div>
+  <span>
+    <b><%= review.ip %></b>
+    <span class="ml-2"><%= review.date.strftime("%d. %m. %Y") %></span> 
+  </span>
+  </span>
+  <div class="flex">
+    <%= render "shared/star", rating: review.rating %>
+  </div>
+  <p><%= review.body %></p>
+</div>

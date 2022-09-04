@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PWA Store | On rails</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= javascript_importmap_tags %>
+    <script src="/tailwind.js"></script>
+  </head>
+
+  <body>
+    <nav class="flex gap-x-2 items-center lg:max-w-3xl lg:mx-[auto]">
+      <%= link_to index_path do %>
+        <img src="/icon-192.png" alt="logo" class="w-28 p-2" />
+      <% end %>
+      <%= form_with(url: "/Search/", method: "get", class: "mb-2 w-full") do |form| %>
+        <div class="flex">
+          <div class="relative w-full">
+            <%= form.text_field :s, value: @search , class: "block p-2.5 w-full z-20 text-l text-gray-900 bg-gray-50 rounded-full border border-gray-300 focus:ring-blue-500 focus:border-blue-500", placeholder: "Search" %>
+            <%= button_tag(type: 'submit', class: "absolute top-0 right-0 p-2.5 text-l font-medium text-white bg-[#5A0FC8] rounded-r-full border border-[#5A0FC8] focus:ring-4 focus:outline-none focus:ring-blue-300") do %>
+              <svg aria-hidden="true" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              <span class="sr-only">Search</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </nav>
+
+    <div class="xl:max-w-[75%] m-[auto] mb-20">
+      <%= yield %>
+    </div>
+
+    <footer class="fixed bottom-0 left-0 right-0 p-4 bg-gray-100 text-gray-700 mt-5 text-center">
+      <p class="text-xs text-gray-700">
+        Made with <span class="text-red-500">❤</span> by <a href="https://github.com/tarasa24"
+          class="text-blue-500">@Tarasa24</a>
+      </p>
+      <p class="text-sm">
+        Read an article about this dataset on <a href="https://github.com/Tarasa24/PWA-Store" class="text-blue-500">GitHub</a>
+      </p>
+    </footer>
+  </body>
+</html>

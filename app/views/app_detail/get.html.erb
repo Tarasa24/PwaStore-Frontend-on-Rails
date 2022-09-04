@@ -1,0 +1,131 @@
+<main>
+  <% if not @app.blank? %>
+    <section class="bg-[<%= @app.colorBg %>] text-[<%= contrastColor(@app.colorBg) %>] xl:p-10 p-5">
+      <div class="flex items-center">
+        <img class="flex-none rounded-lg w-32 object-scale-down mr-5" src="<%= @app.iconURL %>" alt="<%= @app.name %> Icon"
+          onerror="this.style='display: none'" >
+        <div class="truncate">
+          <div class="flex items-center">
+            <h1 class="font-bold text-xl m-0"><%= @app.name %></h1>
+            <% if not langToFlag(@app.lang).nil? %>
+              <img src="/flags/<%= langToFlag(@app.lang) %>.svg" class="inline-block rounded h-6 ml-2" alt="<%= @app.lang %> flag" title="<%= @app.lang %>" />
+            <% elsif not @app.lang.nil? %>
+              <span class="inline-block h-6 ml-2"><%= @app.lang %></span>
+            <% end %>
+          </div>
+          <p class="my-2 truncate"><%= @app.description %></p>
+          <div>
+            <a href="<%= @app.pageURL %>" referrerpolicy="origin-when-cross-origin">
+              <button class="text-[<%= contrastColor(@app.colorTheme) %>] bg-[<%= @app.colorTheme %>] font-bold rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 border border-[<%= contrastColor(@app.colorTheme) %>]">
+                VISIT
+              </button>
+            </a>
+            <span><%= bytesToString(@app.byteSize) %></span>
+          </div>
+        </div>
+      </div>
+      <div class="flex xl:gap-x-20 gap-x-7 justify-center items-center mt-2">
+        <% if @reviews.length() > 0 %>
+          <div class="flex xl:gap-x-10 gap-x-2 items-center">
+            <div class="flex flex-col items-center">
+              <span class="xl:text-xl"><%= @reviewsMetrics.average %></span>
+              <span class="xl:text-m text-s"><%= @reviewsMetrics.total.to_s + " rating" + (@reviewsMetrics.total > 1 ? "s" : "") %></span>
+            </div>
+            <div class="flex">
+              <%= render "shared/star", rating: @reviewsMetrics.average.to_i, colorActive: contrastColor(@app.colorBg) %>
+            </div>
+          </div>
+        <% end %>
+        <% if @app.authorID %>
+          <a href="/Author/<%= @app.authorID %>" class="font-bold">
+            <button class="text-[<%= contrastColor(@app.colorBg) %>] font-bold rounded-lg text-xs px-2.5 py-2 border border-[<%= contrastColor(@app.colorBg) %>]">
+              <%= @app.authorName %>
+            </button>
+          </a>
+        <% end %>
+      </div>
+    </section>
+    <section class="text-center my-7">
+      <p><%= @app.description %></p>
+    </section>
+    <section class="flex overflow-x-auto gap-x-10 h-[45vh]">
+      <img class="cursor-pointer mb-3 rounded-lg object-contain border border-gray-300"
+        src="https://pwa-store.eu-central-1.linodeobjects.com/<%= hash(@app.pageURL) %>/mobile.webp" alt="Screenshot desktop" onclick="window.open(this.src, '_blank');">
+      <img class="cursor-pointer mb-3 rounded-lg object-contain border border-gray-300"
+        src="https://pwa-store.eu-central-1.linodeobjects.com/<%= hash(@app.pageURL) %>/desktop.webp" alt="Screenshot desktop" onclick="window.open(this.src, '_blank');">
+    </section>
+    <section>
+      <h2 class="text-xl font-bold mb-2">Leave a Review</h2>
+      <%= form_with(url: "/Review/" + @app.appID.to_s, method: "post") do |form| %>
+        <div class="flex flex-col xl:flex-row gap-x-10 gap-y-5">
+          <div class="self-center">
+            <% 5.downto(1) do |i| %>
+              <div class="flex items-center gap-x-2">
+                <%= form.radio_button "rating", i,
+                class: "w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 focus:ring-blue-600 focus:bg-blue-600",
+                id: "rating_#{i}",
+                checked: i == 3  %>
+                <%= form.label "rating_#{i}", i, class: "flex" do %>
+                  <%= render 'shared/star', rating: i %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <div class="flex-1">
+            <%= form.text_area "comment", 
+            class: "block p-2.5 w-full min-h-[64px] max-h-[256px] text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500",
+            placeholder: "Write your review here...",
+            rows: 4,
+            required: true %> 
+          </div>
+          <div class="self-center">
+            <%= form.submit "Submit",
+              class: "text-[#{contrastColor(@app.colorTheme)}] bg-[#{@app.colorTheme}] font-bold rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 border border-[#{contrastColor(@app.colorTheme)}]"
+            %>
+          </div>
+        </div>
+      <% end %>
+    </section>
+
+    <% if @reviews.length() > 0 %>
+      <section class="my-5">
+        <h2 class="text-xl font-bold mb-2">Ratings and Reviews</h2>
+        <div class="flex flex-col gap-y-4">
+          <% @reviews.each do |review| %>
+            <%= render 'shared/review', review: review %>
+          <% end %>
+        </div>
+        <% if @reviews.length() >= 3 %>
+          <div class="flex justify-center">
+            <%= link_to reviews_path, class: "font-bold" do %>
+              <button class="font-bold rounded-lg text-xs px-2.5 py-2 border">
+                See all reviews
+              </button>
+            <% end %>
+          </div>
+        <% end %>
+      </section>
+    <% end %>
+
+    <% if not @similarApps.nil? && @similarApps.length() > 0 %>
+      <section class="mt-5">
+        <h2 class="text-xl font-bold mb-2">Similar PWAs</h2>
+        <div class="flex gap-x-5 overflow-x-auto snap-x xl:snap-mandatory">
+          <% @similarApps.each do |similarApp| %>
+            <a class="flex-none snap-start truncate w-32" href="/AppDetail/<%= similarApp["appID"].to_s %>">
+              <img class="rounded-lg w-24 h-24 object-scale-down mx-[auto]" src="<%= similarApp["iconURL"] %>" alt="<%= similarApp["name"] %> Icon"
+                onerror="this.style='display: none'" title="<%= similarApp["score"] %>">
+              <div class="truncate text-center mt-2" title="<%= similarApp["name"] %>">
+                <b><%= similarApp["name"] %></b>
+              </div>
+            </a>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+  <% else %>
+    <section class="text-center my-7">
+      <h1>App not found</h1>
+    </section>
+  <% end %>
+</main>
