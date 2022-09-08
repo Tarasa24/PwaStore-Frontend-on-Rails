@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Review < ApplicationRecord
   # Table name
   self.table_name = 'core.Review'
-  
+
   # Primary key
   self.primary_key = :reviewID
 

@@ -1,25 +1,25 @@
 <main>
-  <%= link_to app_detail_path(@appOTD.appID), class: "block p-6 w-full lg:max-w-3xl lg:mx-[auto] bg-[#{@appOTD.colorBg}] text-[#{contrastColor(@appOTD.colorBg)}] border border-[#{contrastColor(@appOTD.colorBg)}] rounded-lg mb-2" do %>
+  <%= link_to app_detail_path(@app_otd.appID), class: "block p-6 w-full lg:max-w-3xl lg:mx-[auto] bg-[#{@app_otd.colorBg}] text-[#{contrast_color(@app_otd.colorBg)}] border border-[#{contrast_color(@app_otd.colorBg)}] rounded-lg mb-2" do %>
     <div class="flex mb-10">
       <div class="flex-1">
         <span class="mb-2 text-xs tracking-tight">
-          <%= @appOTD.date.strftime("%A, %B %d. %Y") %>
+          <%= @app_otd.date.strftime("%A, %B %d. %Y") %>
         </span>
         <h2 class="text-4xl lg:text-6xl font-bold mt-2">
           PWA OF THE DAY
         </h2>
       </div>
       <div class="flex-2 self-center ml-5">
-        <img class="ml-[auto] rounded-lg w-32" src="<%= @appOTD.iconURL %>" alt="PWA-OTD icon">
+        <img class="ml-[auto] rounded-lg w-32" src="<%= @app_otd.iconURL %>" alt="PWA-OTD icon">
       </div>
     </div>
     <div class="flex">
       <div class="flex-none truncate w-full">
         <span class="text-2xl font-bold">
-          <%= @appOTD.name %>
+          <%= @app_otd.name %>
         </span>
-        <p class="truncate text-xs" title="<%= @appOTD.description %>">
-          <%= @appOTD.description %>
+        <p class="truncate text-xs" title="<%= @app_otd.description %>">
+          <%= @app_otd.description %>
         </p>
       </div>
     </div>
@@ -32,13 +32,12 @@
       </h3>
 
       <div class="flex flex-row overflow-x-auto snap-x snap-mandatory">
-        <% @promotedApps.each do |promoted| %>
+        <% @promoted_apps.each do |promoted| %>
           <%= link_to app_detail_path(promoted.appID), class: "flex-none min-w-[250px] w-[17.5vw] mb-2 mr-6 snap-start" do %>
             <img class="mx-[auto] mb-3 rounded-lg w-[100%] object-contain"
               src="https://pwa-store.eu-central-1.linodeobjects.com/<%= hash(promoted.pageURL) %>/desktop.webp" alt="<%= promoted.name %> screenshot">
             <div class="flex mb-2 items-center">
-              <img class="flex-none rounded-lg w-16 min-h-16 object-scale-down" src="<%= promoted.iconURL %>" alt="<%= promoted.name %> icon"
-                onerror="this.src='icon-54.png';" >
+              <img class="flex-none rounded-lg w-16 min-h-16 object-scale-down" src="<%= promoted.iconURL %>" alt="<%= promoted.name %> icon">
               <div class="flex-auto ml-2 truncate">
                 <span class="text-l font-bold text-gray-900">
                   <%= promoted.name %>
@@ -46,10 +45,10 @@
                 <p class="text-xs text-gray-700 truncate" title="<%= promoted.description %>">
                   <%= promoted.description %>
                 </p>
-                <% if @promotedAppsMetrics.key?(promoted.appID) %>
+                <% if @promoted_apps_metrics.key?(promoted.appID) %>
                   <span class="flex items-center">
-                    <b class="text-s"><%= @promotedAppsMetrics[promoted.appID].average %></b>
-                    <%= render "shared/star", rating: 1, maxRating: 1 %>
+                    <b class="text-s"><%= @promoted_apps_metrics[promoted.appID].average %></b>
+                    <%= render "shared/star", rating: 1, max_rating: 1 %>
                   </span>
                 <% end %>
               </div>
@@ -67,11 +66,10 @@
       </h3>
 
       <div class="grid grid-rows-3 xl:grid-flow-col xl:auto-cols-max xl:gap-x-20 xl:overflow-x-auto xl:snap-x xl:snap-mandatory">
-        <% @popularApps.each_with_index do |popular, i| %>
+        <% @popular_apps.each_with_index do |popular, i| %>
           <%= link_to app_detail_path(popular.appID), class: "flex-none block xl:max-w-sm mb-2 mr-6 flex snap-start truncate items-center" do %>
             <span class="flex-none self-center text-center w-12 mr-2"><%= i + 1 %>.</span>
-            <img class="flex-none rounded-lg w-16 object-scale-down" src="<%= popular.iconURL%>" alt="<%= popular.name %> icon"
-              onerror="this.style='display: none'">
+            <img class="flex-none rounded-lg w-16 object-scale-down" src="<%= popular.iconURL%>" alt="<%= popular.name %> icon">
             <div class="flex-auto ml-2 truncate">
               <span class="text-l font-bold text-gray-900">
                 <%= popular.name %>
@@ -79,10 +77,10 @@
               <p class="text-xs text-gray-700 truncate" title="<%= popular.description %>">
                 <%= popular.description %>
               </p>
-              <% if @popularAppsMetrics.key?(popular.appID) %>
+              <% if @popular_apps_metrics.key?(popular.appID) %>
                 <span class="flex items-center">
-                  <b class="text-s"><%= @popularAppsMetrics[popular.appID].average %></b>
-                  <%= render "shared/star", rating: 1, maxRating: 1 %>
+                  <b class="text-s"><%= @popular_apps_metrics[popular.appID].average %></b>
+                  <%= render "shared/star", rating: 1, max_rating: 1 %>
                 </span>
               <% end %>
             </div>

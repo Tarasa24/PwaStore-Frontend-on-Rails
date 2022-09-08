@@ -21,15 +21,20 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  adapter: sqlite3
-  timeout: 5000
-  database: db/test.sqlite3
+  <<: *default
+  database: pwastore-test
+  username: root
+  password: root
+  host: localhost
+  schema_search_path: 'public,core'
 
 production:
   <<: *default
-  database: <%= ENV.fetch('PG_DB') %>
-  username: <%= ENV.fetch('PG_USERNAME') %>
-  password: <%= ENV.fetch('PG_PASSWORD') %>
-  host: <%= ENV.fetch('PG_HOSTNAME') %>
-  port: <%= ENV.fetch('PG_PORT') %>
-  schema_search_path: <%= ENV.fetch('PG_SCHEMA') %>
+  <% if ENV.fetch('RAILS_ENV', '') == 'production' %>
+    database: <%= ENV.fetch('PG_DB') %>
+    username: <%= ENV.fetch('PG_USERNAME') %>
+    password: <%= ENV.fetch('PG_PASSWORD') %>
+    host: <%= ENV.fetch('PG_HOSTNAME') %>
+    port: <%= ENV.fetch('PG_PORT') %>
+    schema_search_path: <%= ENV.fetch('PG_SCHEMA') %>
+  <% end %>

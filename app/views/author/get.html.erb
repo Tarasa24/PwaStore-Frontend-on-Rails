@@ -7,8 +7,7 @@
     </h1>
     <% @apps.each do |app| %>
       <%= link_to app_detail_path(app.appID), class: "flex-none block mb-2 mr-2 flex snap-start truncate items-center" do %>
-        <img class="flex-none rounded-lg w-16 object-scale-down" src="<%= app.iconURL %>" alt="<%= app.name %> icon"
-          onerror="this.style='display: none';">
+        <img class="flex-none rounded-lg w-16 object-scale-down" src="<%= app.iconURL %>" alt="<%= app.name %> icon">
         <div class="flex-auto ml-2 truncate">
           <span class="text-l font-bold text-gray-900">
             <%= app.name %>
@@ -16,10 +15,10 @@
           <p class="text-xs text-gray-700 truncate" title="<%= app.description %>">
             <%= app.description %>
           </p>
-          <% if @appsMetrics.key?(app.appID) %>
+          <% if @apps_metrics.key?(app.appID) %>
             <span class="flex items-center">
-              <b class="text-s"><%= @appsMetrics[app.appID].average %></b>
-              <%= render "shared/star", rating: 1, maxRating: 1 %>
+              <b class="text-s"><%= @apps_metrics[app.appID].average %></b>
+              <%= render "shared/star", rating: 1, max_rating: 1 %>
             </span>
           <% end %>
         </div>

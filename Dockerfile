@@ -18,11 +18,11 @@ VOLUME /myapp/config/master.key
 
 CMD ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
 
-ENV PG_DB=
-ENV PG_USERNAME=
-ENV PG_PASSWORD=
-ENV PG_HOSTNAME=
-ENV PG_PORT=
-ENV PG_SCHEMA=
+ENV PG_DB=""
+ENV PG_USERNAME=""
+ENV PG_PASSWORD=""
+ENV PG_HOSTNAME=""
+ENV PG_PORT=5432
+ENV PG_SCHEMA="public"
 
 COPY . /myapp
