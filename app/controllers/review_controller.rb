@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class ReviewController < ApplicationController
+  # POST /Review/:appID
+  # Submits a review for an app
+  # On success, redirects to the app page
+  # On incomplete or invalid data, renders json with error message and status 400
+  # On failure, renders json with error message and status 500
   def post
     # Get the appID from the URL
     app_id = params[:appID]
@@ -8,6 +13,12 @@ class ReviewController < ApplicationController
     comment = params[:comment]
     # Get the rating from the form
     rating = params[:rating]
+
+    # Validate presence of all fields
+    # If any field is missing, return an error
+    if comment.nil? || rating.nil?
+      return render json: { error: 'All fields are required' }, status: 400
+    end
 
     # Create a new review
     review = Review.new(
@@ -25,6 +36,10 @@ class ReviewController < ApplicationController
     end
   end
 
+  # GET /Review/:appID
+  # Gets all reviews for an app
+  # Exposes @reviews [Array<Review>]
+  # @see Review
   def get
     @reviews = Review.where(appID: params[:appID]).order('date DESC, "reviewID" DESC')
   end

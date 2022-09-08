@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class SearchController < ApplicationController
+  include AppsMetrics
   before_action :set_search_field, only: [:get]
 
+  # Sets the search field to the search string
+  # @see app/views/layouts/application.html.erb
   def set_search_field
     @search = params[:s]
   end
@@ -21,12 +24,13 @@ class SearchController < ApplicationController
        .limit(300)
   end
 
-  def fetch_apps_metrics(apps_ids)
-    apps_metrics = Review.where(appID: apps_ids).group('appID')
-                         .select('"appID", avg(rating) AS average, count("appID") AS total')
-    apps_metrics.to_h { |m| [m.appID, m] }
-  end
-
+  # GET /Search?s=:search_string
+  # Searches for apps
+  # Exposes following instance variables:
+  # @apps [Array<App>] the apps that match the search string
+  # @apps_metrics [Hash] the metrics of said apps
+  # @see App
+  # @see AppsMetrics
   def get
     return redirect_to index_path if params[:s].nil? || params[:s].empty?
 
@@ -37,6 +41,6 @@ class SearchController < ApplicationController
       return
     end
     @apps = fetch_apps(sanitized_search)
-    @apps_metrics = fetch_apps_metrics(@apps.map(&:appID))
+    @apps_metrics = apps_metrics(@apps.map(&:appID))
   end
 end

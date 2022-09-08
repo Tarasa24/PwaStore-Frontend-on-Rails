@@ -1,4 +1,10 @@
 <%
+  # Component to display star ratings
+  # Usage:
+  #  render "shared/star", rating: 1, max_rating: 1  # 1 star
+  #  render "shared/star", rating: 2, max_rating: 5 # 2 stars out of 5
+  #  render "shared/star", rating: 3, max_rating: 5, color_active: "red", color_disabled: "white" # 3 stars out of 5, red active, white disabled
+
   rating = rating || nil
   max_rating = max_rating || 5
   color_active = color_active || 'black'

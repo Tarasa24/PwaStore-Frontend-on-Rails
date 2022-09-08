@@ -3,7 +3,14 @@
 require 'iso-639'
 
 module AppDetailHelper # rubocop:disable Metrics/ModuleLength
-  # convert ISO 639-1 Language Code into ISO 3166-1-alpha-2 Country Code
+  # Converts ISO 639-1 Language Code into ISO 3166-1-alpha-2 Country Code
+  # @param [String] lang ISO 639-1 Language Code
+  # @return [String] ISO 3166-1-alpha-2 Country Code
+  # @example
+  #  language_code_to_country_code('en') #=> 'US'
+  #  language_code_to_country_code('fr') #=> 'FR'
+  #  language_code_to_country_code('es') #=> 'ES'
+  #  language_code_to_country_code('de') #=> 'DE'
   def lang_to_flag(lang) # rubocop:disable Metrics/MethodLength
     return nil if lang.nil? || lang.empty?
 
@@ -131,14 +138,20 @@ module AppDetailHelper # rubocop:disable Metrics/ModuleLength
       xh: 'za',
       zu: 'za'
     }
-    # omit whatever is after the dash
+
     lang = lang.split('-')[0]
-
     return nil unless codex.key?(lang.to_sym)
-
     codex[lang.to_sym]
   end
 
+  # Converts raw number of bytes into human readable format
+  # @param [Integer] bytes
+  # @return [String]
+  # @example
+  #  bytes_to_human(1024) #=> "1.0 KB"
+  #  bytes_to_human(1024 * 1024) #=> "1.0 MB"
+  #  bytes_to_human(1024 * 1024 * 1024) #=> "1.0 GB"
+  #  bytes_to_human(1024 * 1024 * 1024 * 1024) #=> "1.0 TB"
   def bytes_to_string(bytes)
     if bytes < 1024
       "#{bytes} B"
