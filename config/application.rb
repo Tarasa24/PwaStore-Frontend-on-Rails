@@ -22,5 +22,6 @@ module RoRPwastore
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.active_record.schema_format = :sql
+    config.active_record.suppress_multiple_database_warning = true
   end
 end
