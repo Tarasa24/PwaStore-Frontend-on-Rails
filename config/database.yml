@@ -30,11 +30,9 @@ test:
 
 production:
   <<: *default
-  <% if ENV.fetch('RAILS_ENV', '') == 'production' %>
-    database: <%= ENV.fetch('PG_DB') %>
-    username: <%= ENV.fetch('PG_USERNAME') %>
-    password: <%= ENV.fetch('PG_PASSWORD') %>
-    host: <%= ENV.fetch('PG_HOSTNAME') %>
-    port: <%= ENV.fetch('PG_PORT') %>
-    schema_search_path: <%= ENV.fetch('PG_SCHEMA') %>
-  <% end %>
+  database: <%= ENV.fetch('PG_DB', '') %>
+  username: <%= ENV.fetch('PG_USERNAME', '') %>
+  password: <%= ENV.fetch('PG_PASSWORD', '') %>
+  host: <%= ENV.fetch('PG_HOSTNAME', '') %>
+  port: <%= ENV.fetch('PG_PORT', 5432) %>
+  schema_search_path: <%= ENV.fetch('PG_SCHEMA', 'public') %>
