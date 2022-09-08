@@ -16,9 +16,7 @@ class ReviewController < ApplicationController
 
     # Validate presence of all fields
     # If any field is missing, return an error
-    if comment.nil? || rating.nil?
-      return render json: { error: 'All fields are required' }, status: 400
-    end
+    return render json: { error: 'All fields are required' }, status: 400 if comment.nil? || rating.nil?
 
     # Create a new review
     review = Review.new(

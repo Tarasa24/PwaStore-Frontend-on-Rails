@@ -8,6 +8,8 @@ class AuthorController < ApplicationController
     @author = Author.where(authorID: params[:authorID]).first
     return render status: 404 if @author.nil?
 
+    @search = @author.name
+
     @apps = App.where(authorID: params[:authorID]).order('name ASC')
     @apps_metrics = apps_metrics(@apps.map(&:appID))
   end

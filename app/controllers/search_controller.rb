@@ -35,12 +35,13 @@ class SearchController < ApplicationController
     return redirect_to index_path if params[:s].nil? || params[:s].empty?
 
     sanitized_search = ActiveRecord::Base.sanitize_sql(params[:s]) || ''
-    if sanitized_search.split('|').nil?
-      @apps = []
-      @apps_metrics = {}
-      return
+    return redirect_to index_path if sanitized_search.split('|').nil?
+
+    begin
+      @apps = fetch_apps(sanitized_search)
+      @apps_metrics = apps_metrics(@apps.map(&:appID))
+    rescue ActiveRecord::StatementInvalid
+      redirect_to index_path
     end
-    @apps = fetch_apps(sanitized_search)
-    @apps_metrics = apps_metrics(@apps.map(&:appID))
   end
 end
