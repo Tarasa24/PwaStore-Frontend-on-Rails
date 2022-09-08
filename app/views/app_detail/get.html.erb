@@ -36,11 +36,11 @@
           </div>
         <% end %>
         <% if @app.authorID %>
-          <a href="/Author/<%= @app.authorID %>" class="font-bold">
+          <%= link_to author_path(@app.authorID), class: "font-bold" do %>
             <button class="text-[<%= contrast_color(@app.colorBg) %>] font-bold rounded-lg text-xs px-2.5 py-2 border border-[<%= contrast_color(@app.colorBg) %>]">
               <%= @app.authorName %>
             </button>
-          </a>
+          <% end %>
         <% end %>
       </div>
     </section>
@@ -111,13 +111,13 @@
         <h2 class="text-xl font-bold mb-2">Similar PWAs</h2>
         <div class="flex gap-x-5 overflow-x-auto snap-x xl:snap-mandatory">
           <% @similar_apps.each do |similarApp| %>
-            <a class="flex-none snap-start truncate w-32" href="/AppDetail/<%= similarApp["appID"].to_s %>">
+            <%= link_to app_detail_path(similarApp["appID"]), class: "flex-none snap-start truncate w-32" do %>
               <img class="rounded-lg w-24 h-24 object-scale-down mx-[auto]" src="<%= similarApp["iconURL"] %>" alt="<%= similarApp["name"] %> Icon"
                    title="<%= similarApp["score"] %>">
               <div class="truncate text-center mt-2" title="<%= similarApp["name"] %>">
                 <b><%= similarApp["name"] %></b>
               </div>
-            </a>
+            <% end %>
           <% end %>
         </div>
       </section>
