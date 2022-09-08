@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Helper module for fetching matrics for either singular appID or multiple
 module AppsMetrics
   extend ActiveSupport::Concern

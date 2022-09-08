@@ -141,6 +141,7 @@ module AppDetailHelper # rubocop:disable Metrics/ModuleLength
 
     lang = lang.split('-')[0]
     return nil unless codex.key?(lang.to_sym)
+
     codex[lang.to_sym]
   end
 
