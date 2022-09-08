@@ -1,14 +1,13 @@
 <main>
   <% if not @app.blank? %>
-    <section class="bg-[<%= @app.colorBg %>] text-[<%= contrastColor(@app.colorBg) %>] xl:p-10 p-5">
+    <section class="bg-[<%= @app.colorBg %>] text-[<%= contrast_color(@app.colorBg) %>] xl:p-10 p-5">
       <div class="flex items-center">
-        <img class="flex-none rounded-lg w-32 object-scale-down mr-5" src="<%= @app.iconURL %>" alt="<%= @app.name %> Icon"
-          onerror="this.style='display: none'" >
+        <img class="flex-none rounded-lg w-32 object-scale-down mr-5" src="<%= @app.iconURL %>" alt="<%= @app.name %> Icon">
         <div class="truncate">
           <div class="flex items-center">
             <h1 class="font-bold text-xl m-0"><%= @app.name %></h1>
-            <% if not langToFlag(@app.lang).nil? %>
-              <img src="/flags/<%= langToFlag(@app.lang) %>.svg" class="inline-block rounded h-6 ml-2" alt="<%= @app.lang %> flag" title="<%= @app.lang %>" />
+            <% if not lang_to_flag(@app.lang).nil? %>
+              <img src="/flags/<%= lang_to_flag(@app.lang) %>.svg" class="inline-block rounded h-6 ml-2" alt="<%= @app.lang %> flag" title="<%= @app.lang %>" />
             <% elsif not @app.lang.nil? %>
               <span class="inline-block h-6 ml-2"><%= @app.lang %></span>
             <% end %>
@@ -16,29 +15,29 @@
           <p class="my-2 truncate"><%= @app.description %></p>
           <div>
             <a href="<%= @app.pageURL %>" referrerpolicy="origin-when-cross-origin">
-              <button class="text-[<%= contrastColor(@app.colorTheme) %>] bg-[<%= @app.colorTheme %>] font-bold rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 border border-[<%= contrastColor(@app.colorTheme) %>]">
+              <button class="text-[<%= contrast_color(@app.colorTheme) %>] bg-[<%= @app.colorTheme %>] font-bold rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 border border-[<%= contrast_color(@app.colorTheme) %>]">
                 VISIT
               </button>
             </a>
-            <span><%= bytesToString(@app.byteSize) %></span>
+            <span><%= bytes_to_string(@app.byteSize) %></span>
           </div>
         </div>
       </div>
       <div class="flex xl:gap-x-20 gap-x-7 justify-center items-center mt-2">
-        <% if @reviews.length() > 0 %>
+        <% if @reviews.length > 0 %>
           <div class="flex xl:gap-x-10 gap-x-2 items-center">
             <div class="flex flex-col items-center">
-              <span class="xl:text-xl"><%= @reviewsMetrics.average %></span>
-              <span class="xl:text-m text-s"><%= @reviewsMetrics.total.to_s + " rating" + (@reviewsMetrics.total > 1 ? "s" : "") %></span>
+              <span class="xl:text-xl"><%= @reviews_metrics.average %></span>
+              <span class="xl:text-m text-s"><%= @reviews_metrics.total.to_s + " rating" + (@reviews_metrics.total > 1 ? "s" : "") %></span>
             </div>
             <div class="flex">
-              <%= render "shared/star", rating: @reviewsMetrics.average.to_i, colorActive: contrastColor(@app.colorBg) %>
+              <%= render "shared/star", rating: @reviews_metrics.average.to_i, color_active: contrast_color(@app.colorBg) %>
             </div>
           </div>
         <% end %>
         <% if @app.authorID %>
           <a href="/Author/<%= @app.authorID %>" class="font-bold">
-            <button class="text-[<%= contrastColor(@app.colorBg) %>] font-bold rounded-lg text-xs px-2.5 py-2 border border-[<%= contrastColor(@app.colorBg) %>]">
+            <button class="text-[<%= contrast_color(@app.colorBg) %>] font-bold rounded-lg text-xs px-2.5 py-2 border border-[<%= contrast_color(@app.colorBg) %>]">
               <%= @app.authorName %>
             </button>
           </a>
@@ -80,14 +79,14 @@
           </div>
           <div class="self-center">
             <%= form.submit "Submit",
-              class: "text-[#{contrastColor(@app.colorTheme)}] bg-[#{@app.colorTheme}] font-bold rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 border border-[#{contrastColor(@app.colorTheme)}]"
+              class: "text-[#{contrast_color(@app.colorTheme)}] bg-[#{@app.colorTheme}] font-bold rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 border border-[#{contrast_color(@app.colorTheme)}]"
             %>
           </div>
         </div>
       <% end %>
     </section>
 
-    <% if @reviews.length() > 0 %>
+    <% if @reviews.length > 0 %>
       <section class="my-5">
         <h2 class="text-xl font-bold mb-2">Ratings and Reviews</h2>
         <div class="flex flex-col gap-y-4">
@@ -95,7 +94,7 @@
             <%= render 'shared/review', review: review %>
           <% end %>
         </div>
-        <% if @reviews.length() >= 3 %>
+        <% if @reviews.length >= 3 %>
           <div class="flex justify-center">
             <%= link_to reviews_path, class: "font-bold" do %>
               <button class="font-bold rounded-lg text-xs px-2.5 py-2 border">
@@ -107,14 +106,14 @@
       </section>
     <% end %>
 
-    <% if not @similarApps.nil? && @similarApps.length() > 0 %>
+    <% unless @similar_apps.length == 0 %>
       <section class="mt-5">
         <h2 class="text-xl font-bold mb-2">Similar PWAs</h2>
         <div class="flex gap-x-5 overflow-x-auto snap-x xl:snap-mandatory">
-          <% @similarApps.each do |similarApp| %>
+          <% @similar_apps.each do |similarApp| %>
             <a class="flex-none snap-start truncate w-32" href="/AppDetail/<%= similarApp["appID"].to_s %>">
               <img class="rounded-lg w-24 h-24 object-scale-down mx-[auto]" src="<%= similarApp["iconURL"] %>" alt="<%= similarApp["name"] %> Icon"
-                onerror="this.style='display: none'" title="<%= similarApp["score"] %>">
+                   title="<%= similarApp["score"] %>">
               <div class="truncate text-center mt-2" title="<%= similarApp["name"] %>">
                 <b><%= similarApp["name"] %></b>
               </div>

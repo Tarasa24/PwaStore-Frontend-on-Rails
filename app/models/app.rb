@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class App < ApplicationRecord
   # Table name
   self.table_name = 'core.App'
-  
+
   # Primary key
   self.primary_key = :appID
 

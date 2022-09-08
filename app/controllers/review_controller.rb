@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class ReviewController < ApplicationController
   def post
     # Get the appID from the URL
-    appID = params[:appID]
+    app_id = params[:appID]
     # Get the review from the form
     comment = params[:comment]
     # Get the rating from the form
@@ -9,17 +11,17 @@ class ReviewController < ApplicationController
 
     # Create a new review
     review = Review.new(
-      appID: appID,
+      appID: app_id,
       ip: request.remote_ip,
-      rating: rating,
+      rating:,
       body: comment
-      )
+    )
     if review.save
       # If the review was saved, redirect to the app detail page
       redirect_to app_detail_path(params[:appID])
     else
       # Else send 500 and render the error message
-      render :status => 500, :json => { :error => review.errors.full_messages }
+      render status: 500, json: { error: review.errors.full_messages }
     end
   end
 
